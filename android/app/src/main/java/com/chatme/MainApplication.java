@@ -4,6 +4,7 @@ import android.app.Application;
 import android.content.Context;
 import com.facebook.react.PackageList;
 import com.facebook.react.ReactApplication;
+import org.devio.rn.splashscreen.SplashScreenReactPackage;
 import com.oblador.vectoricons.VectorIconsPackage;
 import com.facebook.react.ReactInstanceManager;
 import com.facebook.react.ReactNativeHost;
@@ -32,23 +33,36 @@ public class MainApplication extends Application implements ReactApplication {
           return packages;
         }
 
+        // @Override
+        // protected List<ReactPackage> getPackages() {
+        //     return Arrays.<ReactPackage>asList(
+        //             new MainReactPackage(),
+        //     new SplashScreenReactPackage()  //here
+        //     );
+        // }
+
         @Override
         protected String getJSMainModuleName() {
           return "index";
         }
       };
 
+       @Override
+        public ReactNativeHost getReactNativeHost() {
+        return mReactNativeHost;
+      }
+
   private final ReactNativeHost mNewArchitectureNativeHost =
       new MainApplicationReactNativeHost(this);
 
-  @Override
-  public ReactNativeHost getReactNativeHost() {
-    if (BuildConfig.IS_NEW_ARCHITECTURE_ENABLED) {
-      return mNewArchitectureNativeHost;
-    } else {
-      return mReactNativeHost;
-    }
-  }
+  // @Override
+  // public ReactNativeHost getReactNativeHost() {
+  //   if (BuildConfig.IS_NEW_ARCHITECTURE_ENABLED) {
+  //     return mNewArchitectureNativeHost;
+  //   } else {
+  //     return mReactNativeHost;
+  //   }
+  // }
 
   @Override
   public void onCreate() {
