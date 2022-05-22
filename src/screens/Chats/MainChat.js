@@ -4,12 +4,15 @@ import {SafeAreaView} from 'react-native-safe-area-context';
 
 import {colors} from '../../utils';
 import {ms} from 'react-native-size-matters';
-import {Header} from '../../components';
+import {Gap, Header, Search} from '../../components';
 
 const MainChat = () => {
   return (
     <SafeAreaView style={styles.container}>
       <Header type={'chat'} title={'Chats'} />
+      <Gap height={ms(16)} />
+      <Search />
+      <Gap height={ms(16)} />
     </SafeAreaView>
   );
 };
