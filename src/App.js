@@ -1,17 +1,14 @@
 import {StyleSheet, Text, View} from 'react-native';
 import React, {useEffect} from 'react';
 import ReactNativeSplashScreen from 'react-native-splash-screen';
+import Root from './routes';
 
 const App = () => {
   useEffect(() => {
     ReactNativeSplashScreen.hide();
   }, []);
 
-  return (
-    <View>
-      <Text>App</Text>
-    </View>
-  );
+  return <Root />;
 };
 
 export default App;
