@@ -67,8 +67,8 @@ const Header = ({title, type}) => {
     );
   } else if (type === 'contact') {
     return (
-      <SafeAreaView>
-        <Text>{title}</Text>
+      <SafeAreaView style={styles.container}>
+        <Text style={styles.title}>{title}</Text>
       </SafeAreaView>
     );
   }
