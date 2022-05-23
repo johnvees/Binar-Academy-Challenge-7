@@ -17,7 +17,7 @@ import {ms} from 'react-native-size-matters';
 const Register = ({navigation}) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [username, setUsername] = useState('');
+  const [fullName, setFullName] = useState('');
   // const [border, setBorder] = useState(colors.background.primary);
 
   // const onFocusForm = () => {
@@ -27,6 +27,11 @@ const Register = ({navigation}) => {
   // const onBlurForm = () => {
   //   setBorder(colors.background.primary);
   // };
+
+  const postRegister = () => {
+    console.log(email, password, fullName);
+    // navigation.replace('MainApp');
+  };
 
   return (
     <SafeAreaView style={styles.container}>
@@ -44,8 +49,9 @@ const Register = ({navigation}) => {
           placeholder="Email"
           placeholderTextColor={colors.text.secondary}
           selectionColor={colors.text.primary}
-          onChangeText={text => {
-            setEmail(text);
+          value={email}
+          onChangeText={value => {
+            setEmail(value);
           }}
         />
         <Gap height={ms(16)} />
@@ -53,12 +59,12 @@ const Register = ({navigation}) => {
           style={styles.textInput}
           // onFocus={onFocusForm}
           // onBlur={onBlurForm}
-          placeholder="Username"
-          secureTextEntry={true}
+          placeholder="Full Name"
           placeholderTextColor={colors.text.secondary}
           selectionColor={colors.text.primary}
-          onChangeText={text => {
-            setUsername(text);
+          value={fullName}
+          onChangeText={value => {
+            setFullName(value);
           }}
         />
         <Gap height={ms(16)} />
@@ -70,8 +76,9 @@ const Register = ({navigation}) => {
           secureTextEntry={true}
           placeholderTextColor={colors.text.secondary}
           selectionColor={colors.text.primary}
-          onChangeText={text => {
-            setPassword(text);
+          value={password}
+          onChangeText={value => {
+            setPassword(value);
           }}
         />
         <Gap height={ms(16)} />
@@ -88,11 +95,7 @@ const Register = ({navigation}) => {
           }}
         />
         <Gap height={ms(16)} />
-        <Button
-          type={'fullButton'}
-          title={'Register'}
-          onPress={() => navigation.replace('MainApp')}
-        />
+        <Button type={'fullButton'} title={'Register'} onPress={postRegister} />
       </ScrollView>
 
       <View style={{flex: 1, justifyContent: 'flex-end'}}>
