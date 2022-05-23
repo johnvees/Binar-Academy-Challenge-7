@@ -29,7 +29,7 @@ const List = ({type}) => {
           </Text>
         </View>
         <View style={styles.chatInfo}>
-          <Text style={styles.chatTime}>23.59 PM</Text>
+          <Text style={styles.chatTime}>23.59</Text>
           <View style={styles.chatCountBorder}>
             <Text style={styles.chatCount}>99</Text>
           </View>
@@ -66,7 +66,7 @@ const styles = StyleSheet.create({
     // backgroundColor: colors.icon.danger,
   },
   username: {
-    fontFamily: fonts.primary[600],
+    fontFamily: fonts.primary[500],
     color: colors.text.primary,
     fontSize: ms(18),
   },

@@ -1,9 +1,10 @@
-import {StyleSheet, Text, View, TouchableOpacity} from 'react-native';
+import {StyleSheet, Text, View, TouchableOpacity, Image} from 'react-native';
 import React from 'react';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import {ms} from 'react-native-size-matters';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
+import Feather from 'react-native-vector-icons/Feather';
 
 import {colors, fonts} from '../../utils';
 
@@ -31,6 +32,39 @@ const Header = ({title, type}) => {
         </View>
       </SafeAreaView>
     );
+  } else if (type === 'chatRoom') {
+    return (
+      <SafeAreaView style={styles.content}>
+        <TouchableOpacity>
+          <Feather name="chevron-left" size={ms(24)} color={colors.white} />
+        </TouchableOpacity>
+        <TouchableOpacity>
+          <Image
+            source={{
+              uri: 'https://images.unsplash.com/photo-1438761681033-6461ffad8d80?crop=entropy&cs=tinysrgb&fm=jpg&ixlib=rb-1.2.1&q=80&raw_url=true&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1170',
+            }}
+            style={styles.profilePhoto}
+          />
+        </TouchableOpacity>
+        <TouchableOpacity style={styles.chatContent}>
+          <View>
+            <Text
+              style={styles.username}
+              ellipsizeMode={'tail'}
+              numberOfLines={1}>
+              John Doe
+            </Text>
+            <Text
+              style={styles.lastChat}
+              ellipsizeMode={'tail'}
+              numberOfLines={1}>
+              Hello World
+            </Text>
+          </View>
+        </TouchableOpacity>
+        {/* <Text style={{color: colors.text.primary}}>Coming Soon</Text> */}
+      </SafeAreaView>
+    );
   } else if (type === 'contact') {
     return (
       <SafeAreaView>
@@ -47,11 +81,40 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    // backgroundColor: '#fff',
+    backgroundColor: colors.icon.danger,
   },
   title: {
     color: colors.text.primary,
     fontFamily: fonts.primary[500],
     fontSize: ms(24),
+  },
+  content: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    padding: ms(16),
+    backgroundColor: colors.background.primary,
+  },
+  profilePhoto: {
+    width: ms(40),
+    height: ms(40),
+    borderRadius: ms(10),
+    resizeMode: 'contain',
+    marginHorizontal: ms(16),
+  },
+  chatContent: {
+    flex: 1,
+    flexDirection: 'row',
+    alignItems: 'center',
+    // backgroundColor: colors.icon.danger,
+  },
+  username: {
+    fontFamily: fonts.primary[500],
+    color: colors.text.primary,
+    fontSize: ms(16),
+  },
+  lastChat: {
+    fontFamily: fonts.primary[400],
+    color: colors.text.secondary,
+    fontSize: ms(10),
   },
 });
