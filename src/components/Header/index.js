@@ -81,7 +81,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    backgroundColor: colors.icon.danger,
+    // backgroundColor: colors.icon.danger,
   },
   title: {
     color: colors.text.primary,

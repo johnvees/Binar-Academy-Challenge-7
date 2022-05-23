@@ -7,7 +7,7 @@ import Logo from '../../assets/logo.png';
 import {colors, fonts} from '../../utils';
 import {ms} from 'react-native-size-matters';
 
-const Login = () => {
+const Login = ({navigation}) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
@@ -16,7 +16,7 @@ const Login = () => {
       <View style={styles.contentLogo}>
         <Image source={Logo} style={styles.logo} />
       </View>
-      <Gap height={ms(32)} />
+      <Gap height={ms(24)} />
       <Text style={styles.title}>Welcome Back!</Text>
       <Gap height={ms(16)} />
       <TextInput
@@ -40,12 +40,17 @@ const Login = () => {
         }}
       />
       <Gap height={ms(16)} />
-      <Button type={'fullButton'} title={'Login'} />
+      <Button
+        type={'fullButton'}
+        title={'Login'}
+        onPress={() => navigation.replace('MainApp')}
+      />
       <View style={{flex: 1, justifyContent: 'flex-end'}}>
         <Button
           type={'textOnly'}
           secondaryTitle={"Don't Have an Account Yet?"}
           primaryTitle={' Register Here'}
+          onPress={() => navigation.replace('Register')}
         />
       </View>
     </SafeAreaView>
