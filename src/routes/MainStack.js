@@ -35,7 +35,7 @@ const MainStack = () => {
   return (
     <Stack.Navigator
       screenOptions={{headerShown: false}}
-      initialRouteName="ChatRoom">
+      initialRouteName="Login">
       <Stack.Screen name="MainApp" component={MainApp} />
       <Stack.Screen name="Login" component={Login} />
       <Stack.Screen name="Register" component={Register} />
