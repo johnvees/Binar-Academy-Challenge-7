@@ -1,4 +1,11 @@
-import {StyleSheet, Text, View, Image, TextInput} from 'react-native';
+import {
+  StyleSheet,
+  Text,
+  View,
+  Image,
+  TextInput,
+  ScrollView,
+} from 'react-native';
 import React, {useState} from 'react';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import {Button, Gap} from '../../components';
@@ -11,6 +18,15 @@ const Register = ({navigation}) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [username, setUsername] = useState('');
+  // const [border, setBorder] = useState(colors.background.primary);
+
+  // const onFocusForm = () => {
+  //   setBorder(colors.button.background);
+  // };
+
+  // const onBlurForm = () => {
+  //   setBorder(colors.background.primary);
+  // };
 
   return (
     <SafeAreaView style={styles.container}>
@@ -20,54 +36,65 @@ const Register = ({navigation}) => {
       <Gap height={ms(24)} />
       <Text style={styles.title}>Nice To See You!</Text>
       <Gap height={ms(16)} />
-      <TextInput
-        style={styles.textInput}
-        placeholder="Email"
-        placeholderTextColor={colors.text.secondary}
-        selectionColor={colors.text.primary}
-        onChangeText={text => {
-          setEmail(text);
-        }}
-      />
-      <Gap height={ms(16)} />
-      <TextInput
-        style={styles.textInput}
-        placeholder="Username"
-        secureTextEntry={true}
-        placeholderTextColor={colors.text.secondary}
-        selectionColor={colors.text.primary}
-        onChangeText={text => {
-          setUsername(text);
-        }}
-      />
-      <Gap height={ms(16)} />
-      <TextInput
-        style={styles.textInput}
-        placeholder="Password"
-        secureTextEntry={true}
-        placeholderTextColor={colors.text.secondary}
-        selectionColor={colors.text.primary}
-        onChangeText={text => {
-          setPassword(text);
-        }}
-      />
-      <Gap height={ms(16)} />
-      <TextInput
-        style={styles.textInput}
-        placeholder="Re-Enter Password"
-        secureTextEntry={true}
-        placeholderTextColor={colors.text.secondary}
-        selectionColor={colors.text.primary}
-        onChangeText={text => {
-          setPassword(text);
-        }}
-      />
-      <Gap height={ms(16)} />
-      <Button
-        type={'fullButton'}
-        title={'Register'}
-        onPress={() => navigation.replace('MainApp')}
-      />
+      <ScrollView showsVerticalScrollIndicator={false}>
+        <TextInput
+          style={styles.textInput}
+          // onFocus={onFocusForm}
+          // onBlur={onBlurForm}
+          placeholder="Email"
+          placeholderTextColor={colors.text.secondary}
+          selectionColor={colors.text.primary}
+          onChangeText={text => {
+            setEmail(text);
+          }}
+        />
+        <Gap height={ms(16)} />
+        <TextInput
+          style={styles.textInput}
+          // onFocus={onFocusForm}
+          // onBlur={onBlurForm}
+          placeholder="Username"
+          secureTextEntry={true}
+          placeholderTextColor={colors.text.secondary}
+          selectionColor={colors.text.primary}
+          onChangeText={text => {
+            setUsername(text);
+          }}
+        />
+        <Gap height={ms(16)} />
+        <TextInput
+          style={styles.textInput}
+          // onFocus={onFocusForm}
+          // onBlur={onBlurForm}
+          placeholder="Password"
+          secureTextEntry={true}
+          placeholderTextColor={colors.text.secondary}
+          selectionColor={colors.text.primary}
+          onChangeText={text => {
+            setPassword(text);
+          }}
+        />
+        <Gap height={ms(16)} />
+        <TextInput
+          style={styles.textInput}
+          // onFocus={onFocusForm}
+          // onBlur={onBlurForm}
+          placeholder="Re-Enter Password"
+          secureTextEntry={true}
+          placeholderTextColor={colors.text.secondary}
+          selectionColor={colors.text.primary}
+          onChangeText={text => {
+            setPassword(text);
+          }}
+        />
+        <Gap height={ms(16)} />
+        <Button
+          type={'fullButton'}
+          title={'Register'}
+          onPress={() => navigation.replace('MainApp')}
+        />
+      </ScrollView>
+
       <View style={{flex: 1, justifyContent: 'flex-end'}}>
         <Button
           type={'textOnly'}
@@ -105,6 +132,8 @@ const styles = StyleSheet.create({
   textInput: {
     borderRadius: ms(6),
     backgroundColor: colors.background.secondary,
+    // borderWidth: 1,
+    // borderColor: border,
     height: ms(44),
     paddingHorizontal: ms(16),
     color: colors.text.primary,

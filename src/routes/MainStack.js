@@ -33,7 +33,9 @@ const MainApp = () => {
 
 const MainStack = () => {
   return (
-    <Stack.Navigator screenOptions={{headerShown: false}}>
+    <Stack.Navigator
+      screenOptions={{headerShown: false}}
+      initialRouteName="Register">
       <Stack.Screen name="MainApp" component={MainApp} />
       <Stack.Screen name="Login" component={Login} />
       <Stack.Screen name="Register" component={Register} />
