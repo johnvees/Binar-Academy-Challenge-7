@@ -11,13 +11,16 @@ import {SafeAreaView} from 'react-native-safe-area-context';
 import {Button, Gap} from '../../components';
 
 import Logo from '../../assets/logo.png';
-import {colors, fonts} from '../../utils';
+import {colors, fonts, useForm} from '../../utils';
 import {ms} from 'react-native-size-matters';
 
 const Register = ({navigation}) => {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [fullName, setFullName] = useState('');
+  const [form, setForm] = useForm({
+    email: '',
+    fullName: '',
+    password: '',
+  });
+
   // const [border, setBorder] = useState(colors.background.primary);
 
   // const onFocusForm = () => {
@@ -29,7 +32,7 @@ const Register = ({navigation}) => {
   // };
 
   const postRegister = () => {
-    console.log(email, password, fullName);
+    console.log(form);
     // navigation.replace('MainApp');
   };
 
@@ -49,9 +52,9 @@ const Register = ({navigation}) => {
           placeholder="Email"
           placeholderTextColor={colors.text.secondary}
           selectionColor={colors.text.primary}
-          value={email}
+          value={form.email}
           onChangeText={value => {
-            setEmail(value);
+            setForm('email', value);
           }}
         />
         <Gap height={ms(16)} />
@@ -62,9 +65,9 @@ const Register = ({navigation}) => {
           placeholder="Full Name"
           placeholderTextColor={colors.text.secondary}
           selectionColor={colors.text.primary}
-          value={fullName}
+          value={form.fullName}
           onChangeText={value => {
-            setFullName(value);
+            setForm('fullName', value);
           }}
         />
         <Gap height={ms(16)} />
@@ -76,9 +79,9 @@ const Register = ({navigation}) => {
           secureTextEntry={true}
           placeholderTextColor={colors.text.secondary}
           selectionColor={colors.text.primary}
-          value={password}
+          value={form.password}
           onChangeText={value => {
-            setPassword(value);
+            setForm('password', value);
           }}
         />
         <Gap height={ms(16)} />

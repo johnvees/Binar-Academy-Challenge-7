@@ -44,13 +44,13 @@ const styles = StyleSheet.create({
     textAlign: 'center',
   },
   secondaryText: {
-    fontSize: ms(16),
+    fontSize: ms(14),
     fontFamily: fonts.primary[400],
-    color: colors.text.primary,
+    color: colors.text.secondary,
     textAlign: 'center',
   },
   primaryText: {
-    fontSize: ms(16),
+    fontSize: ms(14),
     fontFamily: fonts.primary[600],
     color: colors.button.background,
     textAlign: 'center',
