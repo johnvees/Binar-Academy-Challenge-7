@@ -47,6 +47,7 @@ const Register = ({navigation}) => {
         const data = {
           email: form.email,
           fullName: form.fullName,
+          uid: success.user.uid,
         };
 
         Fire.database()
@@ -55,7 +56,7 @@ const Register = ({navigation}) => {
 
         storeData('user', data);
         console.log(success);
-        navigation.navigate('FinalRegister');
+        navigation.navigate('FinalRegister', data);
       })
       .catch(error => {
         const errorMessage = error.message;

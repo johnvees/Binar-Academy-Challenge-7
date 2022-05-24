@@ -14,8 +14,9 @@ import {showMessage} from 'react-native-flash-message';
 
 import {colors, fonts, useForm} from '../../utils';
 import {Button, Gap, Header} from '../../components';
+import {Fire} from '../../configs';
 
-const FinalRegister = ({navigation}) => {
+const FinalRegister = ({navigation, route}) => {
   const [photo, setPhoto] = useState({
     uri: 'https://images.unsplash.com/photo-1438761681033-6461ffad8d80?crop=entropy&cs=tinysrgb&fm=jpg&ixlib=rb-1.2.1&q=80&raw_url=true&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1170',
   });
@@ -24,22 +25,38 @@ const FinalRegister = ({navigation}) => {
     bio: '',
   });
 
+  const {fullName, uid} = route.params;
+  const [photoForDB, setPhotoForDB] = useState('');
+
   const getImage = () => {
-    launchImageLibrary({}, response => {
-      console.log('response :', response);
-      if (response.didCancel === true || response.error === true) {
-        showMessage({
-          message: 'Failed to choose photo',
-          type: 'default',
-          backgroundColor: colors.icon.danger,
-          color: colors.text.primary,
-        });
-      } else {
-        const source = {uri: response.assets[0].uri};
-        console.log(response.assets[0].uri);
-        setPhoto(source);
-      }
-    });
+    launchImageLibrary(
+      {includeBase64: true, quality: 0.5},
+      response => {
+        console.log('response :', response);
+        if (response.didCancel === true || response.error === true) {
+          showMessage({
+            message: 'Failed to choose photo',
+            type: 'default',
+            backgroundColor: colors.icon.danger,
+            color: colors.text.primary,
+          });
+        } else {
+          const source = {uri: response.assets[0].uri};
+          setPhotoForDB(
+            `data:${response.assets[0].type};base64, ${response.assets[0].base64}`,
+          );
+
+          setPhoto(source);
+        }
+      },
+    );
+  };
+
+  const uploadAndContinue = () => {
+    Fire.database()
+      .ref('users/' + uid + '/')
+      .update({photo: photoForDB});
+    navigation.replace('MainApp');
   };
 
   const BioValue = () => {
@@ -73,7 +90,7 @@ const FinalRegister = ({navigation}) => {
         <Gap height={ms(24)} />
         <View style={styles.nameContent}>
           <Text style={styles.name} ellipsizeMode={'tail'} numberOfLines={2}>
-            John Doe
+            {fullName}
           </Text>
           <BioValue />
         </View>
@@ -94,7 +111,11 @@ const FinalRegister = ({navigation}) => {
         </View>
       </ScrollView>
       <View style={{flex: 1, justifyContent: 'flex-end'}}>
-        <Button type={'fullButton'} title={'Upload and Continue'} />
+        <Button
+          type={'fullButton'}
+          title={'Upload and Continue'}
+          onPress={uploadAndContinue}
+        />
         <Gap height={ms(8)} />
         <Button type={'textOnly'} secondaryTitle={'Skip this step'} />
       </View>
