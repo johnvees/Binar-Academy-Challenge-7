@@ -8,7 +8,7 @@ import Feather from 'react-native-vector-icons/Feather';
 
 import {colors, fonts} from '../../utils';
 
-const Header = ({title, type}) => {
+const Header = ({title, type, onPress}) => {
   if (type === 'chat') {
     return (
       <SafeAreaView style={styles.container}>
@@ -74,7 +74,7 @@ const Header = ({title, type}) => {
   } else if (type === 'finalRegist') {
     return (
       <SafeAreaView style={{flexDirection: 'row', alignItems: 'center'}}>
-        <TouchableOpacity>
+        <TouchableOpacity onPress={onPress}>
           <Feather name="chevron-left" size={ms(24)} color={colors.white} />
         </TouchableOpacity>
         <View

@@ -15,7 +15,7 @@ import {showMessage} from 'react-native-flash-message';
 import {colors, fonts} from '../../utils';
 import {Button, Gap, Header} from '../../components';
 
-const FinalRegister = () => {
+const FinalRegister = ({navigation}) => {
   const [Pencarian, setPencarian] = useState('');
   const [photo, setPhoto] = useState({
     uri: 'https://images.unsplash.com/photo-1438761681033-6461ffad8d80?crop=entropy&cs=tinysrgb&fm=jpg&ixlib=rb-1.2.1&q=80&raw_url=true&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1170',
@@ -39,7 +39,7 @@ const FinalRegister = () => {
 
   return (
     <SafeAreaView style={styles.container}>
-      <Header type={'finalRegist'} title={'Upload Photo'} />
+      <Header type={'finalRegist'} title={'Upload Photo'} onPress={() => navigation.goBack('Register')} />
       <Gap height={ms(24)} />
       <ScrollView showsVerticalScrollIndicator={false}>
         <View style={styles.photoContent}>

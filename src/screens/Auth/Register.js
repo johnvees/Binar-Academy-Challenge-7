@@ -13,7 +13,7 @@ import {showMessage, hideMessage} from 'react-native-flash-message';
 
 import {Button, Gap, Loading} from '../../components';
 import Logo from '../../assets/logo.png';
-import {colors, fonts, useForm} from '../../utils';
+import {colors, fonts, getData, storeData, useForm} from '../../utils';
 import {Fire} from '../../configs';
 
 const Register = ({navigation}) => {
@@ -44,7 +44,6 @@ const Register = ({navigation}) => {
       .then(success => {
         setLoading(false);
         setForm('reset');
-        // https://firebase.com/users
         const data = {
           email: form.email,
           fullName: form.fullName,
@@ -54,9 +53,9 @@ const Register = ({navigation}) => {
           .ref('users/' + success.user.uid + '/')
           .set(data);
 
-          
-
+        storeData('user', data);
         console.log(success);
+        navigation.navigate('FinalRegister');
       })
       .catch(error => {
         const errorMessage = error.message;
@@ -68,7 +67,6 @@ const Register = ({navigation}) => {
           color: colors.text.primary,
         });
       });
-    // navigation.replace('MainApp');
   };
 
   return (
