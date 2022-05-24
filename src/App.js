@@ -4,8 +4,9 @@ import ReactNativeSplashScreen from 'react-native-splash-screen';
 import FlashMessage from 'react-native-flash-message';
 
 import Root from './routes';
+import {Fire} from './configs';
 
-const App = () => {
+const App = ({navigation}) => {
   useEffect(() => {
     ReactNativeSplashScreen.hide();
   }, []);

@@ -6,13 +6,7 @@ import {colors, getData} from '../../utils';
 import {ms} from 'react-native-size-matters';
 import {Gap, Header, List, Search} from '../../components';
 
-const MainChat = ({navigation}) => {
-useEffect(() => {
-  getData('user').then(res => {
-    console.log('data user: ', res)
-  })
-})
-
+const MainChat = () => {
   return (
     <SafeAreaView style={styles.container}>
       <Header type={'chat'} title={'Chats'} />
