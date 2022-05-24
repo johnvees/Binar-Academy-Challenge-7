@@ -71,6 +71,23 @@ const Header = ({title, type}) => {
         <Text style={styles.title}>{title}</Text>
       </SafeAreaView>
     );
+  } else if (type === 'finalRegist') {
+    return (
+      <SafeAreaView style={{flexDirection: 'row', alignItems: 'center'}}>
+        <TouchableOpacity>
+          <Feather name="chevron-left" size={ms(24)} color={colors.white} />
+        </TouchableOpacity>
+        <View
+          style={{
+            flex: 1,
+            // backgroundColor: colors.icon.danger,
+            alignItems: 'center',
+            marginStart: ms(-24),
+          }}>
+          <Text style={styles.title}>{title}</Text>
+        </View>
+      </SafeAreaView>
+    );
   }
 };
 
@@ -81,7 +98,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    // backgroundColor: colors.icon.danger,
+    backgroundColor: colors.icon.danger,
   },
   title: {
     color: colors.text.primary,

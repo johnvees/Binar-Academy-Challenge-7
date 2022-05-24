@@ -120,7 +120,7 @@ const Register = ({navigation}) => {
           <Gap height={ms(16)} />
           <Button
             type={'fullButton'}
-            title={'Register'}
+            title={'Continue'}
             onPress={postRegister}
           />
         </ScrollView>

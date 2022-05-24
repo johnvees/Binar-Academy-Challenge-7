@@ -6,6 +6,7 @@ import MainNotif from './Notification';
 import MainProfile from './Profile/MainProfile';
 import Login from './Auth/Login';
 import Register from './Auth/Register';
+import FinalRegister from './Auth/FinalRegister';
 
 export {
   MainChat,
@@ -16,4 +17,5 @@ export {
   MainNotif,
   Login,
   Register,
+  FinalRegister,
 };

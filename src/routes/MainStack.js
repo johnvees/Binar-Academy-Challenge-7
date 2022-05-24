@@ -13,6 +13,7 @@ import {
   NewChat,
   MainNotif,
   Register,
+  FinalRegister,
 } from '../screens';
 
 const Stack = createStackNavigator();
@@ -35,10 +36,11 @@ const MainStack = () => {
   return (
     <Stack.Navigator
       screenOptions={{headerShown: false}}
-      initialRouteName="Register">
+      initialRouteName="FinalRegister">
       <Stack.Screen name="MainApp" component={MainApp} />
       <Stack.Screen name="Login" component={Login} />
       <Stack.Screen name="Register" component={Register} />
+      <Stack.Screen name="FinalRegister" component={FinalRegister} />
       <Stack.Screen name="ChatRoom" component={ChatRoom} />
       <Stack.Screen name="NewChat" component={NewChat} />
       <Stack.Screen name="MainNotif" component={MainNotif} />
