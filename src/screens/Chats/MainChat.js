@@ -1,12 +1,18 @@
 import {StyleSheet, Text, View} from 'react-native';
-import React from 'react';
+import React, {useEffect} from 'react';
 import {SafeAreaView} from 'react-native-safe-area-context';
 
-import {colors} from '../../utils';
+import {colors, getData} from '../../utils';
 import {ms} from 'react-native-size-matters';
 import {Gap, Header, List, Search} from '../../components';
 
-const MainChat = () => {
+const MainChat = ({navigation}) => {
+useEffect(() => {
+  getData('user').then(res => {
+    console.log('data user: ', res)
+  })
+})
+
   return (
     <SafeAreaView style={styles.container}>
       <Header type={'chat'} title={'Chats'} />

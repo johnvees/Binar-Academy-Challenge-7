@@ -1,25 +1,38 @@
 import {StyleSheet, Text, View, Image} from 'react-native';
-import React from 'react';
+import React, {useState, useEffect} from 'react';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import {ms} from 'react-native-size-matters';
-import {colors, fonts} from '../../utils';
+import {colors, fonts, getData} from '../../utils';
 
 const List = ({type}) => {
+  const [profile, setProfile] = useState({
+    avatar: {
+      uri: 'https://images.unsplash.com/photo-1438761681033-6461ffad8d80?crop=entropy&cs=tinysrgb&fm=jpg&ixlib=rb-1.2.1&q=80&raw_url=true&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1170',
+    },
+    fullName: '',
+    bio: 'Empty Bio',
+  });
+
+  useEffect(() => {
+    getData('user').then(res => {
+      // console.log('data user: ', res);
+      const data = res;
+      data.avatar = {uri: res.avatar};
+      // console.log('new data user: ', data);
+      setProfile(res);
+    });
+  });
+
   if (type === 'chat') {
     return (
       <SafeAreaView style={styles.container}>
-        <Image
-          source={{
-            uri: 'https://images.unsplash.com/photo-1438761681033-6461ffad8d80?crop=entropy&cs=tinysrgb&fm=jpg&ixlib=rb-1.2.1&q=80&raw_url=true&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1170',
-          }}
-          style={styles.profilePhoto}
-        />
+        <Image source={profile.avatar} style={styles.profilePhoto} />
         <View style={styles.chatContent}>
           <Text
             style={styles.username}
             ellipsizeMode={'tail'}
             numberOfLines={1}>
-            John Doe
+            {profile.fullName}
           </Text>
           <Text
             style={styles.lastChat}
@@ -88,6 +101,7 @@ const styles = StyleSheet.create({
     fontFamily: fonts.primary[500],
     color: colors.text.primary,
     fontSize: ms(18),
+    textTransform: 'capitalize',
   },
   lastChat: {
     fontFamily: fonts.primary[400],

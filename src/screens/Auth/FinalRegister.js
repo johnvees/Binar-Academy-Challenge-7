@@ -12,7 +12,7 @@ import {ms} from 'react-native-size-matters';
 import {launchImageLibrary} from 'react-native-image-picker';
 import {showMessage} from 'react-native-flash-message';
 
-import {colors, fonts, useForm} from '../../utils';
+import {colors, fonts, storeData, useForm} from '../../utils';
 import {Button, Gap, Header} from '../../components';
 import {Fire} from '../../configs';
 
@@ -29,33 +29,36 @@ const FinalRegister = ({navigation, route}) => {
   const [photoForDB, setPhotoForDB] = useState('');
 
   const getImage = () => {
-    launchImageLibrary(
-      {includeBase64: true, quality: 0.5},
-      response => {
-        console.log('response :', response);
-        if (response.didCancel === true || response.error === true) {
-          showMessage({
-            message: 'Failed to choose photo',
-            type: 'default',
-            backgroundColor: colors.icon.danger,
-            color: colors.text.primary,
-          });
-        } else {
-          const source = {uri: response.assets[0].uri};
-          setPhotoForDB(
-            `data:${response.assets[0].type};base64, ${response.assets[0].base64}`,
-          );
+    launchImageLibrary({includeBase64: true, quality: 0.5}, response => {
+      console.log('response :', response);
+      if (response.didCancel === true || response.error === true) {
+        showMessage({
+          message: 'Failed to choose photo',
+          type: 'default',
+          backgroundColor: colors.icon.danger,
+          color: colors.text.primary,
+        });
+      } else {
+        const source = {uri: response.assets[0].uri};
+        setPhotoForDB(
+          `data:${response.assets[0].type};base64, ${response.assets[0].base64}`,
+        );
 
-          setPhoto(source);
-        }
-      },
-    );
+        setPhoto(source);
+      }
+    });
   };
 
   const uploadAndContinue = () => {
     Fire.database()
       .ref('users/' + uid + '/')
-      .update({photo: photoForDB});
+      .update({avatar: photoForDB});
+
+    const data = route.params;
+    data.avatar = photoForDB;
+
+    storeData('user', data);
+
     navigation.replace('MainApp');
   };
 
