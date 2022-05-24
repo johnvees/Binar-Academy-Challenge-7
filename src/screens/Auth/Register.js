@@ -8,13 +8,15 @@ import {
 } from 'react-native';
 import React, {useState} from 'react';
 import {SafeAreaView} from 'react-native-safe-area-context';
-import {Button, Gap} from '../../components';
-
-import Logo from '../../assets/logo.png';
-import {colors, fonts, useForm} from '../../utils';
 import {ms} from 'react-native-size-matters';
 
+import {Button, Gap} from '../../components';
+import Logo from '../../assets/logo.png';
+import {colors, fonts, useForm} from '../../utils';
+import {Fire} from '../../configs';
+
 const Register = ({navigation}) => {
+  const [password, setPassword] = useState('')
   const [form, setForm] = useForm({
     email: '',
     fullName: '',
@@ -33,6 +35,15 @@ const Register = ({navigation}) => {
 
   const postRegister = () => {
     console.log(form);
+    Fire.auth()
+      .createUserWithEmailAndPassword(form.email, form.password)
+      .then(success => {
+        console.log(success);
+      })
+      .catch(error => {
+        const errorMessage = error.message;
+        console.log(errorMessage);
+      });
     // navigation.replace('MainApp');
   };
 
