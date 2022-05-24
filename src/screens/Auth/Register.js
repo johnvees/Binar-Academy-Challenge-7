@@ -53,6 +53,9 @@ const Register = ({navigation}) => {
         Fire.database()
           .ref('users/' + success.user.uid + '/')
           .set(data);
+
+          
+
         console.log(success);
       })
       .catch(error => {
