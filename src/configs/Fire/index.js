@@ -3,6 +3,8 @@ import firebase from 'firebase';
 firebase.initializeApp({
   apiKey: 'AIzaSyB27mlf-1EhBKf80GfSKDLiRRSj3dBHE3c',
   authDomain: 'chatapp-191b3.firebaseapp.com',
+  databaseURL:
+    'https://chatapp-191b3-default-rtdb.asia-southeast1.firebasedatabase.app',
   projectId: 'chatapp-191b3',
   storageBucket: 'chatapp-191b3.appspot.com',
   messagingSenderId: '866544463746',

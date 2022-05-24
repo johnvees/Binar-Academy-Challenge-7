@@ -44,6 +44,15 @@ const Register = ({navigation}) => {
       .then(success => {
         setLoading(false);
         setForm('reset');
+        // https://firebase.com/users
+        const data = {
+          email: form.email,
+          fullName: form.fullName,
+        };
+
+        Fire.database()
+          .ref('users/' + success.user.uid + '/')
+          .set(data);
         console.log(success);
       })
       .catch(error => {
