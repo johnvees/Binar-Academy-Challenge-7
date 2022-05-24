@@ -12,14 +12,18 @@ import {ms} from 'react-native-size-matters';
 import {launchImageLibrary} from 'react-native-image-picker';
 import {showMessage} from 'react-native-flash-message';
 
-import {colors, fonts} from '../../utils';
+import {colors, fonts, useForm} from '../../utils';
 import {Button, Gap, Header} from '../../components';
 
 const FinalRegister = ({navigation}) => {
-  const [Pencarian, setPencarian] = useState('');
   const [photo, setPhoto] = useState({
     uri: 'https://images.unsplash.com/photo-1438761681033-6461ffad8d80?crop=entropy&cs=tinysrgb&fm=jpg&ixlib=rb-1.2.1&q=80&raw_url=true&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1170',
   });
+
+  const [form, setForm] = useForm({
+    bio: '',
+  });
+
   const getImage = () => {
     launchImageLibrary({}, response => {
       console.log('response :', response);
@@ -31,15 +35,36 @@ const FinalRegister = ({navigation}) => {
           color: colors.text.primary,
         });
       } else {
-        const source = {uri: response.uri};
+        const source = {uri: response.assets[0].uri};
+        console.log(response.assets[0].uri);
         setPhoto(source);
       }
     });
   };
 
+  const BioValue = () => {
+    if (form.bio.length > 1) {
+      return (
+        <Text style={styles.bio} ellipsizeMode={'tail'} numberOfLines={2}>
+          {form.bio}
+        </Text>
+      );
+    } else {
+      return (
+        <Text style={styles.bio} ellipsizeMode={'tail'} numberOfLines={2}>
+          This Gonna Be Your Bio
+        </Text>
+      );
+    }
+  };
+
   return (
     <SafeAreaView style={styles.container}>
-      <Header type={'finalRegist'} title={'Upload Photo'} onPress={() => navigation.goBack('Register')} />
+      <Header
+        type={'finalRegist'}
+        title={'Upload Photo'}
+        onPress={() => navigation.navigate('Register')}
+      />
       <Gap height={ms(24)} />
       <ScrollView showsVerticalScrollIndicator={false}>
         <View style={styles.photoContent}>
@@ -50,9 +75,7 @@ const FinalRegister = ({navigation}) => {
           <Text style={styles.name} ellipsizeMode={'tail'} numberOfLines={2}>
             John Doe
           </Text>
-          <Text style={styles.bio} ellipsizeMode={'tail'} numberOfLines={2}>
-            Hello World I'm in a Good Mood Today
-          </Text>
+          <BioValue />
         </View>
         <Gap height={ms(64)} />
         <View style={{flex: 1}}>
@@ -61,8 +84,9 @@ const FinalRegister = ({navigation}) => {
             placeholder="Input Your Bio Here"
             placeholderTextColor={colors.text.secondary}
             selectionColor={colors.text.primary}
-            onChangeText={text => {
-              setPencarian(text);
+            value={form.bio}
+            onChangeText={value => {
+              setForm('bio', value);
             }}
           />
           <Gap height={ms(16)} />
