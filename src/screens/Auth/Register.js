@@ -9,6 +9,7 @@ import {
 import React, {useState} from 'react';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import {ms} from 'react-native-size-matters';
+import {showMessage, hideMessage} from 'react-native-flash-message';
 
 import {Button, Gap, Loading} from '../../components';
 import Logo from '../../assets/logo.png';
@@ -16,7 +17,6 @@ import {colors, fonts, useForm} from '../../utils';
 import {Fire} from '../../configs';
 
 const Register = ({navigation}) => {
-  const [password, setPassword] = useState('');
   const [loading, setLoading] = useState(false);
 
   const [form, setForm] = useForm({
@@ -37,17 +37,24 @@ const Register = ({navigation}) => {
 
   const postRegister = () => {
     console.log(form);
+
     setLoading(true);
     Fire.auth()
       .createUserWithEmailAndPassword(form.email, form.password)
       .then(success => {
         setLoading(false);
+        setForm('reset');
         console.log(success);
       })
       .catch(error => {
         const errorMessage = error.message;
         setLoading(false);
-        console.log(errorMessage);
+        showMessage({
+          message: errorMessage,
+          type: 'default',
+          backgroundColor: colors.icon.danger,
+          color: colors.text.primary,
+        });
       });
     // navigation.replace('MainApp');
   };
@@ -99,19 +106,6 @@ const Register = ({navigation}) => {
             value={form.password}
             onChangeText={value => {
               setForm('password', value);
-            }}
-          />
-          <Gap height={ms(16)} />
-          <TextInput
-            style={styles.textInput}
-            // onFocus={onFocusForm}
-            // onBlur={onBlurForm}
-            placeholder="Re-Enter Password"
-            secureTextEntry={true}
-            placeholderTextColor={colors.text.secondary}
-            selectionColor={colors.text.primary}
-            onChangeText={text => {
-              setPassword(text);
             }}
           />
           <Gap height={ms(16)} />
