@@ -38,7 +38,7 @@ const List = ({type}) => {
             style={styles.lastChat}
             ellipsizeMode={'tail'}
             numberOfLines={1}>
-            Hello World
+            {profile.bio}
           </Text>
         </View>
         <View style={styles.chatInfo}>

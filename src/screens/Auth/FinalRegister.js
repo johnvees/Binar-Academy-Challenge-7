@@ -52,10 +52,11 @@ const FinalRegister = ({navigation, route}) => {
   const uploadAndContinue = () => {
     Fire.database()
       .ref('users/' + uid + '/')
-      .update({avatar: photoForDB});
+      .update({avatar: photoForDB, bio: form.bio});
 
     const data = route.params;
     data.avatar = photoForDB;
+    data.bio = form.bio;
 
     storeData('user', data);
 
