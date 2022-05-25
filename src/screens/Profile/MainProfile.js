@@ -12,6 +12,8 @@ import Feather from 'react-native-vector-icons/Feather';
 
 import {Button, Gap, Header} from '../../components';
 import {colors, fonts, getData, ImageNull} from '../../utils';
+import {Fire} from '../../configs';
+import {showMessage} from 'react-native-flash-message';
 
 const MainProfile = ({navigation}) => {
   const [profile, setProfile] = useState({
@@ -31,6 +33,23 @@ const MainProfile = ({navigation}) => {
       setProfile(data);
     });
   }, []);
+
+  const postLogout = () => {
+    Fire.auth()
+      .signOut()
+      .then(res => {
+        console.log('logout :', res);
+        navigation.replace('Login');
+      })
+      .catch(err => {
+        showMessage({
+          message: err.message,
+          type: 'default',
+          backgroundColor: colors.icon.danger,
+          color: colors.text.primary,
+        });
+      });
+  };
 
   return (
     <SafeAreaView style={styles.container}>
@@ -64,7 +83,12 @@ const MainProfile = ({navigation}) => {
         </View>
       </TouchableOpacity>
       <View style={{flex: 1, justifyContent: 'flex-end'}}>
-        <Button type={'fullButton'} title={'Logout'} danger />
+        <Button
+          type={'fullButton'}
+          title={'Logout'}
+          danger
+          onPress={postLogout}
+        />
       </View>
     </SafeAreaView>
   );
