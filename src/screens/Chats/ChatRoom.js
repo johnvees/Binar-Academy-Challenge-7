@@ -89,6 +89,19 @@ const ChatRoom = ({navigation, route}) => {
       const chatID = `${user.uid}_${dataUser.uid}`;
 
       const urlFirebase = `chatting/${chatID}/allChat/${setDateChat(today)}`;
+      const urlMessageUser = `messages/${user.uid}/${chatID}`;
+      const urlMessageOther = `messages/${dataUser.uid}/${chatID}`;
+      const dataHistoryChatForUser = {
+        lastContentChat: chatContent,
+        lastChatDate: today.getTime(),
+        uidPartner: dataUser.uid,
+      };
+      const dataHistoryChatForOther = {
+        lastContentChat: chatContent,
+        lastChatDate: today.getTime(),
+        uidPartner: user.uid,
+      };
+
       console.log('data untuk dikirim: ', data);
       console.log(urlFirebase);
       // send to firebase
@@ -97,6 +110,11 @@ const ChatRoom = ({navigation, route}) => {
         .push(data)
         .then(() => {
           setChatContent('');
+          //set history for user
+          Fire.database().ref(urlMessageUser).set(dataHistoryChatForUser);
+
+          //set history for other
+          Fire.database().ref(urlMessageOther).set(dataHistoryChatForOther);
         })
         .catch(err => {
           showError(err.message);
