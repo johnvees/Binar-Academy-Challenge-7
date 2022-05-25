@@ -52,7 +52,7 @@ const MainChat = ({navigation}) => {
 
   const listUserStyle = ({item}) => {
     return (
-      <TouchableOpacity onPress={() => navigation.navigate('ChatRoom')}>
+      <TouchableOpacity onPress={() => navigation.navigate('ChatRoom', item)}>
         <SafeAreaView style={styles.content}>
           <Image source={{uri: item.avatar}} style={styles.profilePhoto} />
           <View style={styles.chatContent}>

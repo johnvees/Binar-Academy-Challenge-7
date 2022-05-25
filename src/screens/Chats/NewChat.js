@@ -29,7 +29,7 @@ const NewChat = ({navigation, route}) => {
         <Button
           type={'fullButton'}
           title={'Chat Now'}
-          onPress={console.log(dataUser.fullName)}
+          onPress={navigation.navigate('ChatRoom', dataUser)}
         />
       </View>
     </SafeAreaView>

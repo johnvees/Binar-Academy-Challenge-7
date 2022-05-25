@@ -6,8 +6,9 @@ import {
   TextInput,
   TouchableOpacity,
   Image,
+  ScrollView,
 } from 'react-native';
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import Feather from 'react-native-vector-icons/Feather';
 import {ms} from 'react-native-size-matters';
@@ -16,61 +17,173 @@ import {
   widthPercentageToDP,
 } from 'react-native-responsive-screen';
 
-import {Header} from '../../components';
-import {colors, fonts} from '../../utils';
+import {Gap, Header} from '../../components';
+import {
+  colors,
+  fonts,
+  getChatTime,
+  getData,
+  setDateChat,
+  showError,
+} from '../../utils';
 import DarkDoodle from '../../assets/dark-doodle.jpg';
+import {Fire} from '../../configs';
 
-const ChatRoom = () => {
-  const [inputChat, setinputChat] = useState('');
+const ChatRoom = ({navigation, route}) => {
+  const dataUser = route.params;
+  const [chatContent, setChatContent] = useState('');
+  const [user, setUser] = useState('');
+  const [chatData, setChatData] = useState([]);
+
+  useEffect(() => {
+    getDataUserFromLocal();
+    const chatID = `${user.uid}_${dataUser.uid}`;
+    const urlFirebase = `chatting/${chatID}/allChat/`;
+    Fire.database()
+      .ref(urlFirebase)
+      .on('value', snapshot => {
+        console.log('data chat', snapshot.val());
+        if (snapshot.val()) {
+          const dataSnapshot = snapshot.val();
+          const allDataChat = [];
+          Object.keys(dataSnapshot).map(key => {
+            const dataChat = dataSnapshot[key];
+            const newDataChat = [];
+
+            Object.keys(dataChat).map(itemChat => {
+              newDataChat.push({
+                id: itemChat,
+                data: dataChat[itemChat],
+              });
+            }),
+              allDataChat.push({
+                id: key,
+                data: newDataChat,
+              });
+          });
+          console.log('all data chat', allDataChat);
+          setChatData(allDataChat);
+        }
+      });
+  }, [dataUser.uid, user.uid]);
+
+  const getDataUserFromLocal = () => {
+    getData('user').then(res => {
+      console.log('user login: ', res);
+      setUser(res);
+    });
+  };
+
+  const chatSend = () => {
+    if (chatContent.length < 1) {
+    } else {
+      console.log('user', user);
+      const today = new Date();
+      const data = {
+        sendBy: user.uid,
+        chatDate: today.getTime(),
+        chatTime: getChatTime(today),
+        chatContent: chatContent,
+      };
+
+      const chatID = `${user.uid}_${dataUser.uid}`;
+
+      const urlFirebase = `chatting/${chatID}/allChat/${setDateChat(today)}`;
+      console.log('data untuk dikirim: ', data);
+      console.log(urlFirebase);
+      // send to firebase
+      Fire.database()
+        .ref(urlFirebase)
+        .push(data)
+        .then(() => {
+          setChatContent('');
+        })
+        .catch(err => {
+          showError(err.message);
+        });
+    }
+  };
+
+  const ChatItem = ({isOther, text, date, avatar}) => {
+    if (isOther) {
+      return (
+        <View style={styles.containerChatUser1}>
+          <Image
+            source={{
+              uri: avatar,
+            }}
+            style={styles.chatPhoto}
+          />
+          <View style={styles.contentChatUser1}>
+            <Text style={styles.chatUser1}>{text}</Text>
+            <Text style={styles.timeChatUser1}>{date}</Text>
+          </View>
+        </View>
+      );
+    } else {
+      return (
+        <View style={styles.containerChatUser2}>
+          <View style={styles.contentChatUser2}>
+            <Text style={styles.chatUser2}>{text}</Text>
+            <Text style={styles.timeChatUser2}>{date}</Text>
+          </View>
+        </View>
+      );
+    }
+  };
 
   return (
     <SafeAreaView>
-      <Header type={'chatRoom'} />
+      <Header
+        type={'chatRoom'}
+        name={dataUser.fullName}
+        bio={dataUser.bio}
+        image={dataUser.avatar}
+        onPress={() => navigation.goBack()}
+      />
       <ImageBackground source={DarkDoodle} style={styles.backgroundChat}>
-        <View style={styles.content}>
-          <View style={styles.chatContent}>
-            <View style={styles.containerChatUser1}>
-              <Image
-                source={{
-                  uri: 'https://images.unsplash.com/photo-1438761681033-6461ffad8d80?crop=entropy&cs=tinysrgb&fm=jpg&ixlib=rb-1.2.1&q=80&raw_url=true&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1170',
-                }}
-                style={styles.chatPhoto}
-              />
-              <View style={styles.contentChatUser1}>
-                <Text style={styles.chatUser1}>
-                  Test user 1Test user 1Test user 1Test user 1Test user 1 Test
-                  user 1 Test user 1 Test user 1 Test user 1
-                </Text>
-                <Text style={styles.timeChatUser1}>23.59</Text>
+        <ScrollView showsVerticalScrollIndicator={false}>
+          {chatData.map(chat => {
+            return (
+              <View key={chat.id}>
+                <Text>{chat.id}</Text>
+                {chat.data.map(itemChat => {
+                  const isOther = itemChat.data.sendBy === user.uid;
+                  return (
+                    <View style={styles.content}>
+                      <View style={styles.chatContent}>
+                        <ChatItem
+                          key={itemChat.id}
+                          isOther={!isOther}
+                          text={itemChat.data.chatContent}
+                          date={itemChat.data.chatTime}
+                          avatar={isOther ? null : dataUser.avatar}
+                        />
+                      </View>
+                    </View>
+                  );
+                })}
               </View>
-            </View>
-            <View style={styles.containerChatUser2}>
-              <View style={styles.contentChatUser2}>
-                <Text style={styles.chatUser2}>
-                  Test User 2 Test User 2Test User 2 Test User 2 Test User 2 Test User 2
-                </Text>
-                <Text style={styles.timeChatUser2}>00.00</Text>
-              </View>
-            </View>
-          </View>
-
-          <View style={styles.sendContent}>
-            <TextInput
-              style={styles.textInput}
-              placeholder="Type Here"
-              placeholderTextColor={colors.text.secondary}
-              selectionColor={colors.text.primary}
-              onChangeText={text => {
-                setinputChat(text);
-              }}
-            />
-            <TouchableOpacity style={styles.button}>
-              <Feather name="send" size={ms(24)} color={colors.button.text} />
-            </TouchableOpacity>
-          </View>
+            );
+          })}
+        </ScrollView>
+        <Gap height={ms(8)} />
+        <View style={styles.sendContent}>
+          <TextInput
+            style={styles.textInput}
+            placeholder="Type Here"
+            placeholderTextColor={colors.text.secondary}
+            selectionColor={colors.text.primary}
+            value={chatContent}
+            onChangeText={value => {
+              setChatContent(value);
+            }}
+          />
+          <TouchableOpacity style={styles.button} onPress={chatSend}>
+            <Feather name="send" size={ms(24)} color={colors.button.text} />
+          </TouchableOpacity>
         </View>
       </ImageBackground>
-      <Header type={'chatRoom'} />
     </SafeAreaView>
   );
 };
@@ -83,7 +196,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: ms(24),
     paddingBottom: ms(110),
     width: widthPercentageToDP('100%'),
-    height: heightPercentageToDP('100%'),
+    height: heightPercentageToDP('90%'),
   },
   content: {
     flex: 1,
