@@ -20,7 +20,7 @@ import {Fire} from '../../configs';
 const EditProfile = ({navigation}) => {
   const [profile, setProfile] = useState({
     avatar: {
-      uri: ImageNull
+      uri: ImageNull,
     },
     fullName: 'Empty Name',
     bio: 'Empty Bio',
@@ -45,16 +45,50 @@ const EditProfile = ({navigation}) => {
 
   const update = () => {
     console.log('profile :', profile);
+
+    if (password.length > 0) {
+      if (password.length < 6) {
+        showMessage({
+          message: 'Password must have minumum of 6 character',
+          type: 'default',
+          backgroundColor: colors.icon.danger,
+          color: colors.text.primary,
+        });
+      } else {
+        updatePassword();
+        updateProfileData();
+        navigation.navigate('MainApp');
+      }
+    } else {
+      updateProfileData();
+      navigation.navigate('MainApp');
+    }
+  };
+
+  const updatePassword = () => {
+    Fire.auth().onAuthStateChanged(user => {
+      if (user) {
+        user.updatePassword(password).catch(err => {
+          showMessage({
+            message: err.message,
+            type: 'default',
+            backgroundColor: colors.icon.danger,
+            color: colors.text.primary,
+          });
+        });
+      }
+    });
+  };
+
+  const updateProfileData = () => {
     const data = profile;
     data.avatar = photoForDB;
-
     Fire.database()
       .ref(`users/${profile.uid}/`)
       .update(data)
       .then(() => {
         console.log('succes :', data);
         storeData('user', data);
-        navigation.navigate('MainApp');
       })
       .catch(err => {
         showMessage({
@@ -150,10 +184,11 @@ const EditProfile = ({navigation}) => {
             placeholder="Input Your Password Here"
             placeholderTextColor={colors.text.secondary}
             selectionColor={colors.text.primary}
+            secureTextEntry={true}
             value={password}
-            // onChangeText={value => {
-            //   setForm('email', value);
-            // }}
+            onChangeText={value => {
+              setPassword(value);
+            }}
           />
         </View>
       </ScrollView>

@@ -15,11 +15,11 @@ const List = ({type}) => {
 
   useEffect(() => {
     getData('user').then(res => {
-      // console.log('data user: ', res);
+      console.log('data user: ', res);
       const data = res;
       data.avatar = {uri: res.avatar};
-      // console.log('new data user: ', data);
-      setProfile(res);
+      console.log('new data user: ', data);
+      setProfile(data);
     });
   }, []);
 

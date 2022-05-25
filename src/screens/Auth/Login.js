@@ -23,16 +23,16 @@ const Login = ({navigation}) => {
     password: '',
   });
 
-  useEffect(() => {
-    Fire.auth().onAuthStateChanged(user => {
-      if (user) {
-        console.log('user: ', user);
-        navigation.replace('MainApp');
-      } else {
-        navigation.replace('Login');
-      }
-    });
-  }, [navigation]);
+  // useEffect(() => {
+  //   Fire.auth().onAuthStateChanged(user => {
+  //     if (user) {
+  //       console.log('user: ', user);
+  //       navigation.replace('MainApp');
+  //     } else {
+  //       navigation.replace('Login');
+  //     }
+  //   });
+  // }, [navigation]);
 
   const postLogin = () => {
     console.log('isi form: ', form);
