@@ -15,43 +15,39 @@ import {Gap, Header, List, Search} from '../../components';
 import {Fire} from '../../configs';
 
 const MainChat = ({navigation}) => {
-  const [profile, setProfile] = useState({
-    avatar: {
-      uri: ImageNull,
-    },
-    fullName: '',
-    bio: 'Empty Bio',
-  });
   const [user, setUser] = useState({});
   const [historyChat, setHistoryChat] = useState([]);
 
   useEffect(() => {
     getDataUserFromLocal();
-    // getData('user').then(res => {
-    //   console.log('data user: ', res);
-    //   const data = res;
-    //   data.avatar = {uri: res.avatar};
-    //   console.log('new data user: ', data);
-    //   setProfile(data);
+    const rootDB = Fire.database().ref();
     const urlHistory = `messages/${user.uid}/`;
-    Fire.database()
-      .ref(urlHistory)
-      .on('value', snapshot => {
-        console.log('data history', snapshot.val());
-        if (snapshot.val()) {
-          const oldData = snapshot.val();
-          const data = [];
-          Object.keys(oldData).map(key => {
-            data.push({
-              id: key,
-              ...oldData[key],
-            });
+    const messageDB = rootDB.child(urlHistory);
+
+    messageDB.on('value', async snapshot => {
+      console.log('data history', snapshot.val());
+      if (snapshot.val()) {
+        const oldData = snapshot.val();
+        const data = [];
+
+        const promises = await Object.keys(oldData).map(async key => {
+          const urlUidOther = `users/${oldData[key].uidPartner}`;
+          const detailOther = await rootDB.child(urlUidOther).once('value');
+          console.log('detail other', detailOther.val());
+          data.push({
+            id: key,
+            detailOther: detailOther.val(),
+            ...oldData[key],
           });
-          console.log('new data history', data);
-          setHistoryChat(data);
-          console.log('test data', historyChat);
-        }
-      });
+        });
+
+        await Promise.all(promises);
+
+        console.log('new data history', data);
+        setHistoryChat(data);
+        console.log('test data', historyChat);
+      }
+    });
   }, [user.uid]);
 
   const getDataUserFromLocal = () => {
@@ -65,13 +61,13 @@ const MainChat = ({navigation}) => {
     return (
       <TouchableOpacity onPress={() => navigation.navigate('ChatRoom', item)}>
         <SafeAreaView style={styles.content}>
-          <Image source={{uri: item.avatar}} style={styles.profilePhoto} />
+          <Image source={{uri: item.detailOther.avatar}} style={styles.profilePhoto} />
           <View style={styles.chatContent}>
             <Text
               style={styles.username}
               ellipsizeMode={'tail'}
               numberOfLines={1}>
-              {item.id}
+              {item.detailOther.fullName}
             </Text>
             <Text
               style={styles.lastChat}
