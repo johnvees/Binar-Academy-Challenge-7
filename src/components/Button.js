@@ -3,10 +3,17 @@ import React from 'react';
 import {colors, fonts} from '../utils';
 import {ms} from 'react-native-size-matters';
 
-const Button = ({onPress, type, title, secondaryTitle, primaryTitle}) => {
+const Button = ({
+  onPress,
+  type,
+  title,
+  secondaryTitle,
+  primaryTitle,
+  danger,
+}) => {
   if (type === 'fullButton') {
     return (
-      <TouchableOpacity onPress={onPress} style={styles.button}>
+      <TouchableOpacity onPress={onPress} style={styles.button(danger)}>
         <Text style={styles.buttonText}>{title}</Text>
       </TouchableOpacity>
     );
@@ -31,12 +38,12 @@ const Button = ({onPress, type, title, secondaryTitle, primaryTitle}) => {
 export default Button;
 
 const styles = StyleSheet.create({
-  button: {
-    backgroundColor: colors.button.background,
+  button: danger => ({
+    backgroundColor: danger ? colors.icon.danger : colors.button.background,
     borderRadius: ms(8),
     paddingVertical: ms(10),
     paddingHorizontal: ms(24),
-  },
+  }),
   buttonText: {
     fontSize: ms(16),
     fontFamily: fonts.primary[600],

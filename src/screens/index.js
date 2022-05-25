@@ -7,6 +7,7 @@ import MainProfile from './Profile/MainProfile';
 import Login from './Auth/Login';
 import Register from './Auth/Register';
 import FinalRegister from './Auth/FinalRegister';
+import EditProfile from './Profile/EditProfile';
 
 export {
   MainChat,
@@ -18,4 +19,5 @@ export {
   Login,
   Register,
   FinalRegister,
+  EditProfile,
 };

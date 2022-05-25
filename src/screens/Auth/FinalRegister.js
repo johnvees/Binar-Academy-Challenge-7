@@ -96,7 +96,7 @@ const FinalRegister = ({navigation, route}) => {
           <Text style={styles.name} ellipsizeMode={'tail'} numberOfLines={2}>
             {fullName}
           </Text>
-          <BioValue />
+          <BioValue ellipsizeMode={'tail'} numberOfLines={2} />
         </View>
         <Gap height={ms(64)} />
         <View style={{flex: 1}}>
@@ -144,7 +144,6 @@ const styles = StyleSheet.create({
     width: ms(150),
     height: ms(150),
     borderRadius: ms(150 / 2),
-    marginRight: ms(16),
     resizeMode: 'contain',
   },
   nameContent: {

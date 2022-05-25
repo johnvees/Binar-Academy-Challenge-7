@@ -14,6 +14,7 @@ import {
   MainNotif,
   Register,
   FinalRegister,
+  EditProfile,
 } from '../screens';
 
 const Stack = createStackNavigator();
@@ -23,7 +24,7 @@ const MainApp = () => {
   return (
     <Tab.Navigator
       screenOptions={{headerShown: false}}
-      initialRouteName="Chats"
+      initialRouteName="Profile"
       tabBar={props => <BottomTabNavigator {...props} />}>
       <Tab.Screen name="Contacts" component={MainContact} />
       <Tab.Screen name="Chats" component={MainChat} />
@@ -36,13 +37,14 @@ const MainStack = () => {
   return (
     <Stack.Navigator
       screenOptions={{headerShown: false}}
-      initialRouteName="Register">
+      initialRouteName="Login">
       <Stack.Screen name="MainApp" component={MainApp} />
       <Stack.Screen name="Login" component={Login} />
       <Stack.Screen name="Register" component={Register} />
       <Stack.Screen name="FinalRegister" component={FinalRegister} />
       <Stack.Screen name="ChatRoom" component={ChatRoom} />
       <Stack.Screen name="NewChat" component={NewChat} />
+      <Stack.Screen name="EditProfile" component={EditProfile} />
       <Stack.Screen name="MainNotif" component={MainNotif} />
     </Stack.Navigator>
   );
