@@ -12,7 +12,7 @@ import {ms} from 'react-native-size-matters';
 import {colors, fonts, getData, ImageNull, showError} from '../../utils';
 import {Fire} from '../../configs';
 
-const List = ({type, navigation, onPress}) => {
+const List = ({type, navigation}) => {
   const [profile, setProfile] = useState({
     avatar: {
       uri: ImageNull,
@@ -48,45 +48,45 @@ const List = ({type, navigation, onPress}) => {
   const myData = Object.keys(listUser).map(key => listUser[key]);
   console.log(myData);
 
-  const listUserStyle = ({item}) => {
+  const listUserStyle = ({item, onPress}) => {
     return (
-      <SafeAreaView style={styles.container}>
-        <Image source={{uri: item.avatar}} style={styles.profilePhoto} />
-        <View style={styles.chatContent}>
-          <Text
-            style={styles.username}
-            ellipsizeMode={'tail'}
-            numberOfLines={1}>
-            {item.fullName}
-          </Text>
-          <Text
-            style={styles.lastChat}
-            ellipsizeMode={'tail'}
-            numberOfLines={1}>
-            {item.bio}
-          </Text>
-        </View>
-        <View style={styles.chatInfo}>
-          <Text style={styles.chatTime}>23.59</Text>
-          <View style={styles.chatCountBorder}>
-            <Text style={styles.chatCount}>99</Text>
+      <TouchableOpacity>
+        <SafeAreaView style={styles.container}>
+          <Image source={{uri: item.avatar}} style={styles.profilePhoto} />
+          <View style={styles.chatContent}>
+            <Text
+              style={styles.username}
+              ellipsizeMode={'tail'}
+              numberOfLines={1}>
+              {item.fullName}
+            </Text>
+            <Text
+              style={styles.lastChat}
+              ellipsizeMode={'tail'}
+              numberOfLines={1}>
+              {item.bio}
+            </Text>
           </View>
-        </View>
-      </SafeAreaView>
+          <View style={styles.chatInfo}>
+            <Text style={styles.chatTime}>23.59</Text>
+            <View style={styles.chatCountBorder}>
+              <Text style={styles.chatCount}>99</Text>
+            </View>
+          </View>
+        </SafeAreaView>
+      </TouchableOpacity>
     );
   };
 
   if (type === 'chat') {
     return (
       <View>
-        <TouchableOpacity onPress={onPress}>
-          <FlatList
-            showsVerticalScrollIndicator={false}
-            data={myData}
-            keyExtractor={item => item.uid}
-            renderItem={listUserStyle}
-          />
-        </TouchableOpacity>
+        <FlatList
+          showsVerticalScrollIndicator={false}
+          data={myData}
+          keyExtractor={item => item.uid}
+          renderItem={listUserStyle}
+        />
       </View>
     );
   } else if (type === 'contact') {
