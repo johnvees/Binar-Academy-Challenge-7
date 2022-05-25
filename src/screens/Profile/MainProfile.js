@@ -11,12 +11,12 @@ import {ms} from 'react-native-size-matters';
 import Feather from 'react-native-vector-icons/Feather';
 
 import {Button, Gap, Header} from '../../components';
-import {colors, fonts, getData} from '../../utils';
+import {colors, fonts, getData, ImageNull} from '../../utils';
 
-const MainProfile = () => {
+const MainProfile = ({navigation}) => {
   const [profile, setProfile] = useState({
     avatar: {
-      uri: 'https://images.unsplash.com/photo-1438761681033-6461ffad8d80?crop=entropy&cs=tinysrgb&fm=jpg&ixlib=rb-1.2.1&q=80&raw_url=true&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1170',
+      uri: ImageNull,
     },
     fullName: '',
     bio: 'Empty Bio',
@@ -30,7 +30,7 @@ const MainProfile = () => {
       // console.log('new data user: ', data);
       setProfile(res);
     });
-  });
+  }, []);
 
   return (
     <SafeAreaView style={styles.container}>
@@ -50,6 +50,7 @@ const MainProfile = () => {
       </View>
       <Gap height={ms(24)} />
       <TouchableOpacity
+        onPress={() => navigation.navigate('EditProfile')}
         style={{
           paddingVertical: ms(16),
           borderBottomWidth: 1,

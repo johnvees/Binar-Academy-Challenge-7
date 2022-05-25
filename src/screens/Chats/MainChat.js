@@ -1,5 +1,5 @@
 import {StyleSheet, Text, View} from 'react-native';
-import React, {useEffect} from 'react';
+import React from 'react';
 import {SafeAreaView} from 'react-native-safe-area-context';
 
 import {colors, getData} from '../../utils';

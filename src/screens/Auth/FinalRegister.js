@@ -12,13 +12,13 @@ import {ms} from 'react-native-size-matters';
 import {launchImageLibrary} from 'react-native-image-picker';
 import {showMessage} from 'react-native-flash-message';
 
-import {colors, fonts, storeData, useForm} from '../../utils';
+import {colors, fonts, ImageNull, storeData, useForm} from '../../utils';
 import {Button, Gap, Header} from '../../components';
 import {Fire} from '../../configs';
 
 const FinalRegister = ({navigation, route}) => {
   const [photo, setPhoto] = useState({
-    uri: 'https://images.unsplash.com/photo-1438761681033-6461ffad8d80?crop=entropy&cs=tinysrgb&fm=jpg&ixlib=rb-1.2.1&q=80&raw_url=true&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1170',
+    uri: ImageNull,
   });
 
   const [form, setForm] = useForm({
@@ -57,6 +57,7 @@ const FinalRegister = ({navigation, route}) => {
     const data = route.params;
     data.avatar = photoForDB;
     data.bio = form.bio;
+    console.log(data);
 
     storeData('user', data);
 

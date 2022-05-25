@@ -2,12 +2,12 @@ import {StyleSheet, Text, View, Image} from 'react-native';
 import React, {useState, useEffect} from 'react';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import {ms} from 'react-native-size-matters';
-import {colors, fonts, getData} from '../../utils';
+import {colors, fonts, getData, ImageNull} from '../../utils';
 
 const List = ({type}) => {
   const [profile, setProfile] = useState({
     avatar: {
-      uri: 'https://images.unsplash.com/photo-1438761681033-6461ffad8d80?crop=entropy&cs=tinysrgb&fm=jpg&ixlib=rb-1.2.1&q=80&raw_url=true&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1170',
+      uri: ImageNull,
     },
     fullName: '',
     bio: 'Empty Bio',
@@ -21,7 +21,7 @@ const List = ({type}) => {
       // console.log('new data user: ', data);
       setProfile(res);
     });
-  });
+  }, []);
 
   if (type === 'chat') {
     return (
