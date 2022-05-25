@@ -94,11 +94,13 @@ const ChatRoom = ({navigation, route}) => {
       const dataHistoryChatForUser = {
         lastContentChat: chatContent,
         lastChatDate: today.getTime(),
+        lastChatTime: getChatTime(today),
         uidPartner: dataUser.uid,
       };
       const dataHistoryChatForOther = {
         lastContentChat: chatContent,
         lastChatDate: today.getTime(),
+        lastChatTime: getChatTime(today),
         uidPartner: user.uid,
       };
 

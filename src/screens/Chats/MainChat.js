@@ -22,33 +22,44 @@ const MainChat = ({navigation}) => {
     fullName: '',
     bio: 'Empty Bio',
   });
-  const [listUser, setListUser] = useState([]);
+  const [user, setUser] = useState({});
+  const [historyChat, setHistoryChat] = useState([]);
 
   useEffect(() => {
-    getData('user').then(res => {
-      console.log('data user: ', res);
-      const data = res;
-      data.avatar = {uri: res.avatar};
-      console.log('new data user: ', data);
-      setProfile(data);
-    });
-
+    getDataUserFromLocal();
+    // getData('user').then(res => {
+    //   console.log('data user: ', res);
+    //   const data = res;
+    //   data.avatar = {uri: res.avatar};
+    //   console.log('new data user: ', data);
+    //   setProfile(data);
+    const urlHistory = `messages/${user.uid}/`;
     Fire.database()
-      .ref('users/')
-      .once('value')
-      .then(res => {
-        console.log('data: ', res.val());
-        if (res.val()) {
-          setListUser(res.val());
+      .ref(urlHistory)
+      .on('value', snapshot => {
+        console.log('data history', snapshot.val());
+        if (snapshot.val()) {
+          const oldData = snapshot.val();
+          const data = [];
+          Object.keys(oldData).map(key => {
+            data.push({
+              id: key,
+              ...oldData[key],
+            });
+          });
+          console.log('new data history', data);
+          setHistoryChat(data);
+          console.log('test data', historyChat);
         }
-      })
-      .catch(err => {
-        showError(err.message);
       });
-  }, []);
+  }, [user.uid]);
 
-  const myData = Object.keys(listUser).map(key => listUser[key]);
-  console.log(myData);
+  const getDataUserFromLocal = () => {
+    getData('user').then(res => {
+      console.log('user login: ', res);
+      setUser(res);
+    });
+  };
 
   const listUserStyle = ({item}) => {
     return (
@@ -60,17 +71,17 @@ const MainChat = ({navigation}) => {
               style={styles.username}
               ellipsizeMode={'tail'}
               numberOfLines={1}>
-              {item.fullName}
+              {item.id}
             </Text>
             <Text
               style={styles.lastChat}
               ellipsizeMode={'tail'}
               numberOfLines={1}>
-              {item.bio}
+              {item.lastContentChat}
             </Text>
           </View>
           <View style={styles.chatInfo}>
-            <Text style={styles.chatTime}>23.59</Text>
+            <Text style={styles.chatTime}>{item.lastChatTime}</Text>
             <View style={styles.chatCountBorder}>
               <Text style={styles.chatCount}>99</Text>
             </View>
@@ -88,8 +99,8 @@ const MainChat = ({navigation}) => {
       <Gap height={ms(32)} />
       <FlatList
         showsVerticalScrollIndicator={false}
-        data={myData}
-        keyExtractor={item => item.uid}
+        data={historyChat}
+        keyExtractor={item => item.id}
         renderItem={listUserStyle}
       />
     </SafeAreaView>
