@@ -9,19 +9,20 @@ import {
 import React, {useState, useEffect} from 'react';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import {Button, Gap, Loading} from '../../components';
+import {useDispatch} from 'react-redux';
 
 import Logo from '../../assets/logo.png';
-import {colors, fonts, storeData, useForm} from '../../utils';
+import {colors, fonts, showError, storeData, useForm} from '../../utils';
 import {ms} from 'react-native-size-matters';
 import {Fire} from '../../configs';
 import {showMessage} from 'react-native-flash-message';
 
 const Login = ({navigation}) => {
-  const [loading, setLoading] = useState(false);
   const [form, setForm] = useForm({
     email: '',
     password: '',
   });
+  const dispatch = useDispatch();
 
   // useEffect(() => {
   //   Fire.auth().onAuthStateChanged(user => {
@@ -36,12 +37,12 @@ const Login = ({navigation}) => {
 
   const postLogin = () => {
     console.log('isi form: ', form);
-    setLoading(true);
+    dispatch({type: 'SET_LOADING', value: true});
     Fire.auth()
       .signInWithEmailAndPassword(form.email, form.password)
       .then(res => {
         console.log('success: ', res);
-        setLoading(false);
+        dispatch({type: 'SET_LOADING', value: false});
         Fire.database()
           .ref(`users/${res.user.uid}/`)
           .once('value')
@@ -55,62 +56,54 @@ const Login = ({navigation}) => {
       })
       .catch(err => {
         console.log('error: ', err);
-        setLoading(false);
-        showMessage({
-          message: err.message,
-          type: 'default',
-          backgroundColor: colors.icon.danger,
-          color: colors.text.primary,
-        });
+        dispatch({type: 'SET_LOADING', value: false});
+        showError(err.message);
       });
   };
 
   return (
-    <>
-      <SafeAreaView style={styles.container}>
-        <ScrollView showsVerticalScrollIndicator={false}>
-          <View style={styles.contentLogo}>
-            <Image source={Logo} style={styles.logo} />
-          </View>
-          <Gap height={ms(24)} />
-          <Text style={styles.title}>Welcome Back!</Text>
-          <Gap height={ms(16)} />
-          <TextInput
-            style={styles.textInput}
-            placeholder="Email"
-            placeholderTextColor={colors.text.secondary}
-            selectionColor={colors.text.primary}
-            value={form.email}
-            onChangeText={value => {
-              setForm('email', value);
-            }}
-          />
-          <Gap height={ms(16)} />
-          <TextInput
-            style={styles.textInput}
-            placeholder="Password"
-            secureTextEntry={true}
-            placeholderTextColor={colors.text.secondary}
-            selectionColor={colors.text.primary}
-            value={form.password}
-            onChangeText={value => {
-              setForm('password', value);
-            }}
-          />
-          <Gap height={ms(16)} />
-          <Button type={'fullButton'} title={'Login'} onPress={postLogin} />
-        </ScrollView>
-        <View style={{flex: 1, justifyContent: 'flex-end'}}>
-          <Button
-            type={'textOnly'}
-            secondaryTitle={"Don't Have an Account Yet?"}
-            primaryTitle={' Register Here'}
-            onPress={() => navigation.replace('Register')}
-          />
+    <SafeAreaView style={styles.container}>
+      <ScrollView showsVerticalScrollIndicator={false}>
+        <View style={styles.contentLogo}>
+          <Image source={Logo} style={styles.logo} />
         </View>
-      </SafeAreaView>
-      {loading && <Loading />}
-    </>
+        <Gap height={ms(24)} />
+        <Text style={styles.title}>Welcome Back!</Text>
+        <Gap height={ms(16)} />
+        <TextInput
+          style={styles.textInput}
+          placeholder="Email"
+          placeholderTextColor={colors.text.secondary}
+          selectionColor={colors.text.primary}
+          value={form.email}
+          onChangeText={value => {
+            setForm('email', value);
+          }}
+        />
+        <Gap height={ms(16)} />
+        <TextInput
+          style={styles.textInput}
+          placeholder="Password"
+          secureTextEntry={true}
+          placeholderTextColor={colors.text.secondary}
+          selectionColor={colors.text.primary}
+          value={form.password}
+          onChangeText={value => {
+            setForm('password', value);
+          }}
+        />
+        <Gap height={ms(16)} />
+        <Button type={'fullButton'} title={'Login'} onPress={postLogin} />
+      </ScrollView>
+      <View style={{flex: 1, justifyContent: 'flex-end'}}>
+        <Button
+          type={'textOnly'}
+          secondaryTitle={"Don't Have an Account Yet?"}
+          primaryTitle={' Register Here'}
+          onPress={() => navigation.replace('Register')}
+        />
+      </View>
+    </SafeAreaView>
   );
 };
 
