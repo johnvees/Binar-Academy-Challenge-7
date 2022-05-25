@@ -1,10 +1,18 @@
-import {StyleSheet, Text, View, Image} from 'react-native';
+import {
+  StyleSheet,
+  Text,
+  View,
+  Image,
+  TouchableOpacity,
+  FlatList,
+} from 'react-native';
 import React, {useState, useEffect} from 'react';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import {ms} from 'react-native-size-matters';
-import {colors, fonts, getData, ImageNull} from '../../utils';
+import {colors, fonts, getData, ImageNull, showError} from '../../utils';
+import {Fire} from '../../configs';
 
-const List = ({type}) => {
+const List = ({type, navigation, onPress}) => {
   const [profile, setProfile] = useState({
     avatar: {
       uri: ImageNull,
@@ -12,6 +20,7 @@ const List = ({type}) => {
     fullName: '',
     bio: 'Empty Bio',
   });
+  const [listUser, setListUser] = useState([]);
 
   useEffect(() => {
     getData('user').then(res => {
@@ -21,24 +30,40 @@ const List = ({type}) => {
       console.log('new data user: ', data);
       setProfile(data);
     });
+
+    Fire.database()
+      .ref('users/')
+      .once('value')
+      .then(res => {
+        console.log('data: ', res.val());
+        if (res.val()) {
+          setListUser(res.val());
+        }
+      })
+      .catch(err => {
+        showError(err.message);
+      });
   }, []);
 
-  if (type === 'chat') {
+  const myData = Object.keys(listUser).map(key => listUser[key]);
+  console.log(myData);
+
+  const listUserStyle = ({item}) => {
     return (
       <SafeAreaView style={styles.container}>
-        <Image source={profile.avatar} style={styles.profilePhoto} />
+        <Image source={{uri: item.avatar}} style={styles.profilePhoto} />
         <View style={styles.chatContent}>
           <Text
             style={styles.username}
             ellipsizeMode={'tail'}
             numberOfLines={1}>
-            {profile.fullName}
+            {item.fullName}
           </Text>
           <Text
             style={styles.lastChat}
             ellipsizeMode={'tail'}
             numberOfLines={1}>
-            {profile.bio}
+            {item.bio}
           </Text>
         </View>
         <View style={styles.chatInfo}>
@@ -48,6 +73,21 @@ const List = ({type}) => {
           </View>
         </View>
       </SafeAreaView>
+    );
+  };
+
+  if (type === 'chat') {
+    return (
+      <View>
+        <TouchableOpacity onPress={onPress}>
+          <FlatList
+            showsVerticalScrollIndicator={false}
+            data={myData}
+            keyExtractor={item => item.uid}
+            renderItem={listUserStyle}
+          />
+        </TouchableOpacity>
+      </View>
     );
   } else if (type === 'contact') {
     return (

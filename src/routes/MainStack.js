@@ -15,6 +15,7 @@ import {
   Register,
   FinalRegister,
   EditProfile,
+  Unused,
 } from '../screens';
 
 const Stack = createStackNavigator();
@@ -46,6 +47,7 @@ const MainStack = () => {
       <Stack.Screen name="NewChat" component={NewChat} />
       <Stack.Screen name="EditProfile" component={EditProfile} />
       <Stack.Screen name="MainNotif" component={MainNotif} />
+      <Stack.Screen name="Unused" component={Unused} />
     </Stack.Navigator>
   );
 };

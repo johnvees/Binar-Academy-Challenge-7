@@ -6,14 +6,14 @@ import {colors, getData} from '../../utils';
 import {ms} from 'react-native-size-matters';
 import {Gap, Header, List, Search} from '../../components';
 
-const MainChat = () => {
+const MainChat = ({navigation}) => {
   return (
     <SafeAreaView style={styles.container}>
       <Header type={'chat'} title={'Chats'} />
       <Gap height={ms(16)} />
       <Search />
       <Gap height={ms(32)} />
-      <List type={'chat'} />
+      <List type={'chat'} onPress={() => navigation.navigate('ChatRoom')} />
     </SafeAreaView>
   );
 };
