@@ -25,7 +25,7 @@ const MainApp = () => {
   return (
     <Tab.Navigator
       screenOptions={{headerShown: false}}
-      initialRouteName="Contacts"
+      initialRouteName="Chats"
       tabBar={props => <BottomTabNavigator {...props} />}>
       <Tab.Screen name="Contacts" component={MainContact} />
       <Tab.Screen name="Chats" component={MainChat} />

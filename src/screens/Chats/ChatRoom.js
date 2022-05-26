@@ -32,11 +32,12 @@ import {Fire} from '../../configs';
 const ChatRoom = ({navigation, route}) => {
   const dataUser = route.params;
   const [chatContent, setChatContent] = useState('');
-  const [user, setUser] = useState('');
+  const [user, setUser] = useState({});
   const [chatData, setChatData] = useState([]);
 
   useEffect(() => {
     getDataUserFromLocal();
+    console.log('coba data user', dataUser);
     const chatID = `${user.uid}_${dataUser.uid}`;
     const urlFirebase = `chatting/${chatID}/allChat/`;
     Fire.database()
@@ -61,8 +62,8 @@ const ChatRoom = ({navigation, route}) => {
                 data: newDataChat,
               });
           });
-          console.log('all data chat', allDataChat);
           setChatData(allDataChat);
+          console.log('all data chat', allDataChat);
         }
       });
   }, [dataUser.uid, user.uid]);
@@ -79,6 +80,7 @@ const ChatRoom = ({navigation, route}) => {
     } else {
       console.log('user', user);
       const today = new Date();
+
       const data = {
         sendBy: user.uid,
         chatDate: today.getTime(),
@@ -124,8 +126,17 @@ const ChatRoom = ({navigation, route}) => {
     }
   };
 
-  const ChatItem = ({isOther, text, date, avatar}) => {
-    if (isOther) {
+  const ChatItem = ({isMe, text, date, avatar}) => {
+    if (isMe) {
+      return (
+        <View style={styles.containerChatUser2}>
+          <View style={styles.contentChatUser2}>
+            <Text style={styles.chatUser2}>{text}</Text>
+            <Text style={styles.timeChatUser2}>{date}</Text>
+          </View>
+        </View>
+      );
+    } else {
       return (
         <View style={styles.containerChatUser1}>
           <Image
@@ -137,15 +148,6 @@ const ChatRoom = ({navigation, route}) => {
           <View style={styles.contentChatUser1}>
             <Text style={styles.chatUser1}>{text}</Text>
             <Text style={styles.timeChatUser1}>{date}</Text>
-          </View>
-        </View>
-      );
-    } else {
-      return (
-        <View style={styles.containerChatUser2}>
-          <View style={styles.contentChatUser2}>
-            <Text style={styles.chatUser2}>{text}</Text>
-            <Text style={styles.timeChatUser2}>{date}</Text>
           </View>
         </View>
       );
@@ -168,16 +170,16 @@ const ChatRoom = ({navigation, route}) => {
               <View key={chat.id}>
                 <Text>{chat.id}</Text>
                 {chat.data.map(itemChat => {
-                  const isOther = itemChat.data.sendBy === user.uid;
+                  const isMe = itemChat.data.sendBy === user.uid;
                   return (
                     <View style={styles.content}>
                       <View style={styles.chatContent}>
                         <ChatItem
                           key={itemChat.id}
-                          isOther={!isOther}
+                          isMe={isMe}
                           text={itemChat.data.chatContent}
                           date={itemChat.data.chatTime}
-                          avatar={isOther ? null : dataUser.avatar}
+                          avatar={isMe ? null : dataUser.avatar}
                         />
                       </View>
                     </View>

@@ -58,10 +58,24 @@ const MainChat = ({navigation}) => {
   };
 
   const listUserStyle = ({item}) => {
+    const dataForOthers = {
+      id: item.detailOther.uid,
+      data: item.detailOther,
+    };
     return (
-      <TouchableOpacity onPress={() => navigation.navigate('ChatRoom', item)}>
+      <TouchableOpacity
+        onPress={() =>
+          navigation.navigate(
+            'ChatRoom',
+            item.detailOther,
+            console.log('test coba', dataForOthers),
+          )
+        }>
         <SafeAreaView style={styles.content}>
-          <Image source={{uri: item.detailOther.avatar}} style={styles.profilePhoto} />
+          <Image
+            source={{uri: item.detailOther.avatar}}
+            style={styles.profilePhoto}
+          />
           <View style={styles.chatContent}>
             <Text
               style={styles.username}
