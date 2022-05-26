@@ -6,7 +6,8 @@ import {colors, fonts, ImageNull} from '../../utils';
 import {ms} from 'react-native-size-matters';
 
 const NewChat = ({navigation, route}) => {
-  const dataUser = route.params;
+  const dataUser = route.params.data;
+  const chatuuid = route.params.chatuuid;
 
   return (
     <SafeAreaView style={styles.container}>
@@ -29,7 +30,11 @@ const NewChat = ({navigation, route}) => {
         <Button
           type={'fullButton'}
           title={'Chat Now'}
-          onPress={navigation.navigate('ChatRoom', dataUser)}
+          onPress={navigation.navigate(
+            'ChatRoom',
+            {data: dataUser, chatuuid: chatuuid},
+            console.log('dari new chat:', dataUser, chatuuid),
+          )}
         />
       </View>
     </SafeAreaView>

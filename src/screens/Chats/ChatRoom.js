@@ -16,6 +16,7 @@ import {
   heightPercentageToDP,
   widthPercentageToDP,
 } from 'react-native-responsive-screen';
+import uuid from 'react-native-uuid';
 
 import {Gap, Header} from '../../components';
 import {
@@ -30,7 +31,8 @@ import DarkDoodle from '../../assets/dark-doodle.jpg';
 import {Fire} from '../../configs';
 
 const ChatRoom = ({navigation, route}) => {
-  const dataUser = route.params;
+  const dataUser = route.params.data;
+  const chatid_ = route.params.chatuuid;
   const [chatContent, setChatContent] = useState('');
   const [user, setUser] = useState({});
   const [chatData, setChatData] = useState([]);
@@ -38,8 +40,10 @@ const ChatRoom = ({navigation, route}) => {
   useEffect(() => {
     getDataUserFromLocal();
     console.log('coba data user', dataUser);
-    const chatID = `${user.uid}_${dataUser.uid}`;
-    const urlFirebase = `chatting/${chatID}/allChat/`;
+    console.log('coba data chat id', chatid_);
+    // const chatID = `${user.uid}_${dataUser.uid}`;
+    const chatID = uuid.v4();
+    const urlFirebase = `chatting/${chatid_}/allChat/`;
     Fire.database()
       .ref(urlFirebase)
       .on('value', snapshot => {
@@ -88,11 +92,13 @@ const ChatRoom = ({navigation, route}) => {
         chatContent: chatContent,
       };
 
-      const chatID = `${user.uid}_${dataUser.uid}`;
+      // const chatID = `${user.uid}_${dataUser.uid}`;
+      const chatID = uuid.v4();
 
-      const urlFirebase = `chatting/${chatID}/allChat/${setDateChat(today)}`;
-      const urlMessageUser = `messages/${user.uid}/${chatID}`;
-      const urlMessageOther = `messages/${dataUser.uid}/${chatID}`;
+      const urlFirebase = `chatting/${chatid_}/allChat/${setDateChat(today)}`;
+      const urlMessageUser = `messages/${user.uid}/${chatid_}`;
+      const urlMessageOther = `messages/${dataUser.uid}/${chatid_}`;
+
       const dataHistoryChatForUser = {
         lastContentChat: chatContent,
         lastChatDate: today.getTime(),

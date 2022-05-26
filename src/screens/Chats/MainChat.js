@@ -61,13 +61,14 @@ const MainChat = ({navigation}) => {
     const dataForOthers = {
       id: item.detailOther.uid,
       data: item.detailOther,
+      chatid: item.id,
     };
     return (
       <TouchableOpacity
         onPress={() =>
           navigation.navigate(
             'ChatRoom',
-            item.detailOther,
+            {data: item.detailOther, chatuuid: item.id},
             console.log('test coba', dataForOthers),
           )
         }>

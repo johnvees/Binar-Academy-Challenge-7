@@ -8,7 +8,8 @@ import {
 } from 'react-native';
 import React, {useState, useEffect} from 'react';
 import {SafeAreaView} from 'react-native-safe-area-context';
-import {colors, fonts, getData, ImageNull} from '../../utils';
+import uuid from 'react-native-uuid';
+import {colors, fonts, getData, ImageNull, showError} from '../../utils';
 import {ms} from 'react-native-size-matters';
 import {Gap, Header, List, Search} from '../../components';
 import {Fire} from '../../configs';
@@ -36,9 +37,22 @@ const MainContact = ({navigation}) => {
       .ref('users/')
       .once('value')
       .then(res => {
-        console.log('data: ', res.val());
+        console.log('data: ', Object.values(res.val()));
+        console.log('data lama: ', profile.uid);
         if (res.val()) {
-          setListUser(res.val());
+          // const oldData = res.val();
+          // const nextOldData = Object.keys(oldData).map(key => listUser[key]);
+          // console.log('test res val :', oldData, nextOldData);
+          setListUser(
+            Object.values(res.val()).filter(it => it.uid != profile.uid),
+          );
+          console.log(
+            'tes set list user',
+            Object.values(res.val()).filter(it => it.uid != profile.uid),
+          );
+          // setListUser(console.log(Object.values(res.val())));
+        } else {
+          // console.log('list user: ', listUser);
         }
       })
       .catch(err => {
@@ -50,8 +64,17 @@ const MainContact = ({navigation}) => {
   console.log(myData);
 
   const listContact = ({item}) => {
+    const chatuuid = uuid.v4();
+
     return (
-      <TouchableOpacity onPress={() => navigation.navigate('NewChat', item)}>
+      <TouchableOpacity
+        onPress={() =>
+          navigation.navigate(
+            'NewChat',
+            {data: item, chatuuid: chatuuid},
+            console.log('dari main contact:', chatuuid, item),
+          )
+        }>
         <SafeAreaView style={styles.content}>
           <Image source={{uri: item.avatar}} style={styles.profilePhoto} />
           <View style={styles.chatContent}>
