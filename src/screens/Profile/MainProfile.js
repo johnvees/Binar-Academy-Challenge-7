@@ -17,9 +17,7 @@ import {showMessage} from 'react-native-flash-message';
 
 const MainProfile = ({navigation}) => {
   const [profile, setProfile] = useState({
-    avatar: {
-      uri: ImageNull,
-    },
+    avatar: ImageNull,
     fullName: '',
     bio: 'Empty Bio',
   });
@@ -28,7 +26,7 @@ const MainProfile = ({navigation}) => {
     getData('user').then(res => {
       console.log('data user: ', res);
       const data = res;
-      data.avatar = {uri: res.avatar};
+      data.avatar = res.avatar;
       console.log('new data user: ', data);
       setProfile(data);
     });
@@ -56,7 +54,7 @@ const MainProfile = ({navigation}) => {
       <Header type={'contact'} title={'Profile'} />
       <Gap height={ms(24)} />
       <View style={styles.photoContent}>
-        <Image source={profile.avatar} style={styles.profilePhoto} />
+        <Image source={{uri: profile.avatar}} style={styles.profilePhoto} />
       </View>
       <Gap height={ms(16)} />
       <View style={styles.nameContent}>

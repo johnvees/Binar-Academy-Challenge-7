@@ -92,10 +92,10 @@ const MainContact = ({navigation}) => {
             </Text>
           </View>
           <View style={styles.chatInfo}>
-            <Text style={styles.chatTime}>23.59</Text>
+            {/* <Text style={styles.chatTime}>{item.lastChatTime}</Text>
             <View style={styles.chatCountBorder}>
               <Text style={styles.chatCount}>99</Text>
-            </View>
+            </View> */}
           </View>
         </SafeAreaView>
       </TouchableOpacity>

@@ -19,25 +19,21 @@ import {Fire} from '../../configs';
 
 const EditProfile = ({navigation}) => {
   const [profile, setProfile] = useState({
-    avatar: {
-      uri: ImageNull,
-    },
+    avatar: ImageNull,
     fullName: 'Empty Name',
     bio: 'Empty Bio',
   });
 
   const [password, setPassword] = useState('');
 
-  const [photo, setPhoto] = useState({
-    uri: ImageNull,
-  });
-  const [photoForDB, setPhotoForDB] = useState('');
+  const [photo, setPhoto] = useState(ImageNull);
+  const [photoForDB, setPhotoForDB] = useState(ImageNull);
 
   useEffect(() => {
     getData('user').then(res => {
       console.log('data user: ', res);
       const data = res;
-      setPhoto({uri: res.avatar});
+      setPhoto(res.avatar);
       console.log('new data user: ', data);
       setProfile(data);
     });
@@ -118,12 +114,11 @@ const EditProfile = ({navigation}) => {
           color: colors.text.primary,
         });
       } else {
-        const source = {uri: response.assets[0].uri};
         setPhotoForDB(
           `data:${response.assets[0].type};base64, ${response.assets[0].base64}`,
         );
 
-        setPhoto(source);
+        setPhoto(response.assets[0].uri);
       }
     });
   };
@@ -139,7 +134,7 @@ const EditProfile = ({navigation}) => {
       <ScrollView>
         <TouchableOpacity onPress={getImage}>
           <View style={styles.photoContent}>
-            <Image source={photo} style={styles.profilePhoto} />
+            <Image source={{uri: photo}} style={styles.profilePhoto} />
           </View>
         </TouchableOpacity>
         <Gap height={ms(24)} />

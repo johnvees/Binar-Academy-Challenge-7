@@ -17,16 +17,14 @@ import {Button, Gap, Header} from '../../components';
 import {Fire} from '../../configs';
 
 const FinalRegister = ({navigation, route}) => {
-  const [photo, setPhoto] = useState({
-    uri: ImageNull,
-  });
+  const [photo, setPhoto] = useState(ImageNull);
 
   const [form, setForm] = useForm({
     bio: '',
   });
 
   const {fullName, uid} = route.params;
-  const [photoForDB, setPhotoForDB] = useState('');
+  const [photoForDB, setPhotoForDB] = useState(ImageNull);
 
   const getImage = () => {
     launchImageLibrary({includeBase64: true, quality: 0.5}, response => {
@@ -39,12 +37,12 @@ const FinalRegister = ({navigation, route}) => {
           color: colors.text.primary,
         });
       } else {
-        const source = {uri: response.assets[0].uri};
+        // const source = {uri: };
         setPhotoForDB(
           `data:${response.assets[0].type};base64, ${response.assets[0].base64}`,
         );
 
-        setPhoto(source);
+        setPhoto(response.assets[0].uri);
       }
     });
   };
@@ -90,7 +88,7 @@ const FinalRegister = ({navigation, route}) => {
       <Gap height={ms(24)} />
       <ScrollView showsVerticalScrollIndicator={false}>
         <View style={styles.photoContent}>
-          <Image source={photo} style={styles.profilePhoto} />
+          <Image source={{uri: photo}} style={styles.profilePhoto} />
         </View>
         <Gap height={ms(24)} />
         <View style={styles.nameContent}>

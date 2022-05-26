@@ -93,7 +93,7 @@ const ChatRoom = ({navigation, route}) => {
       };
 
       // const chatID = `${user.uid}_${dataUser.uid}`;
-      const chatID = uuid.v4();
+      // const chatID = uuid.v4();
 
       const urlFirebase = `chatting/${chatid_}/allChat/${setDateChat(today)}`;
       const urlMessageUser = `messages/${user.uid}/${chatid_}`;
@@ -170,7 +170,7 @@ const ChatRoom = ({navigation, route}) => {
         onPress={() => navigation.goBack()}
       />
       <ImageBackground source={DarkDoodle} style={styles.backgroundChat}>
-        <ScrollView showsVerticalScrollIndicator={false}>
+        <ScrollView showsVerticalScrollIndicator={false} keyboardShouldPersistTaps="always">
           {chatData.map(chat => {
             return (
               <View key={chat.id}>
@@ -196,7 +196,7 @@ const ChatRoom = ({navigation, route}) => {
           })}
         </ScrollView>
         <Gap height={ms(8)} />
-        <View style={styles.sendContent}>
+        <View style={styles.sendContent} >
           <TextInput
             style={styles.textInput}
             placeholder="Type Here"
@@ -222,7 +222,7 @@ const styles = StyleSheet.create({
   backgroundChat: {
     paddingTop: ms(24),
     paddingHorizontal: ms(24),
-    paddingBottom: ms(110),
+    // paddingBottom: ms(110),
     width: widthPercentageToDP('100%'),
     height: heightPercentageToDP('90%'),
   },
