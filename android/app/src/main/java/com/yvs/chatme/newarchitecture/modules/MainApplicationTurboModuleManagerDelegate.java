@@ -1,4 +1,4 @@
-package com.chatme.newarchitecture.modules;
+package com.yvs.chatme.newarchitecture.modules;
 
 import com.facebook.jni.HybridData;
 import com.facebook.react.ReactPackage;

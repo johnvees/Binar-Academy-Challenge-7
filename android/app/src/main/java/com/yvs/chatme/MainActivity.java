@@ -1,4 +1,4 @@
-package com.chatme;
+package com.yvs.chatme;
 
 import android.os.Bundle;
 import com.facebook.react.ReactActivity;
